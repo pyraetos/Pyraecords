@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -94,6 +95,15 @@ public abstract class Sys{
 	
 	public static Component space(int scaleFactor){
 		return Box.createRigidArea(new Dimension(10 * scaleFactor, 10 * scaleFactor));
+	}
+	
+	public static int toInt(byte[] buf){
+		ByteBuffer bb = ByteBuffer.wrap(buf);
+		return bb.getInt();
+	}
+	
+	public static byte[] toBytes(int i){
+		return ByteBuffer.allocate(4).putInt(i).array();
 	}
 	
 	public static Color randomColor(){

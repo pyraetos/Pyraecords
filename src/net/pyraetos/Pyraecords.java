@@ -83,8 +83,18 @@ public class Pyraecords extends JFrame{
 		
 		pack();
 		setVisible(true);
+		
+		Client.startInputClient();
 	}
 
+	public static RecordFile getDisplayedRecordFile(){
+		RecordFile rf = new RecordFile();
+		for(RecordPanel rp : recordPanels){
+			rf.records.add(rp.toRecord());
+		}
+		return rf;
+	}
+	
 	public static void display(RecordFile rf){
 		recordPanels.clear();
 		contentPane.remove(recordsPanel);
@@ -130,7 +140,7 @@ public class Pyraecords extends JFrame{
 		
 		loadButton = new JButton("Load");
 		loadButton.addActionListener((e) -> {
-			//Do stuff
+			Client.startInputClient();
 		});
 		communicationPanel.add(loadButton);
 		
@@ -138,7 +148,7 @@ public class Pyraecords extends JFrame{
 		
 		sendButton = new JButton("Send");
 		sendButton.addActionListener((e) -> {
-			//Do stuff
+			Client.startOutputClient();
 		});
 		communicationPanel.add(sendButton);
 		

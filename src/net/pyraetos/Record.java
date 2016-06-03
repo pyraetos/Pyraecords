@@ -1,8 +1,10 @@
 package net.pyraetos;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Record {
+@SuppressWarnings("serial")
+public class Record implements Serializable{
 
 	public String title;
 	public HashMap<String, String> data = new HashMap<String, String>();
