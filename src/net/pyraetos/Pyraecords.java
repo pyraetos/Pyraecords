@@ -60,20 +60,6 @@ public class Pyraecords extends JFrame{
 	
 	public static void main(String[] args) {
 		instance = new Pyraecords();
-		Record test1 = new Record();
-		test1.title = "Facebook";
-		test1.data.put("Username", "pyraetos");
-		test1.data.put("Password", "watermelon2010");
-		
-		Record test2 = new Record();
-		test2.title = "YouTube";
-		test2.data.put("Channel Name", "NerdyCast");
-		test2.data.put("Password", "BArFam3loN@018");
-		
-		RecordFile rf = new RecordFile();
-		rf.records.add(test1);
-		rf.records.add(test2);
-		display(rf);
 	}
 	
 	public Pyraecords(){

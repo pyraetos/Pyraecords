@@ -66,8 +66,10 @@ public class Client extends Socket {
 							flag = Sys.toInt(buf);
 							if(flag == 0xdddddddd)
 								break;
-							if(flag == 0xeeeeeeee)
+							if(flag == 0xeeeeeeee){
+								recordFile.records.add(record);//////
 								break recordLoop;
+							}
 							size = flag;
 							title = new byte[size];
 							in.read(title);
