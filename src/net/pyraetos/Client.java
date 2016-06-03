@@ -83,10 +83,11 @@ public class Client extends Socket {
 					}
 				Pyraecords.display(recordFile);
 				in.close();
+				close();
 			}catch(Exception e){
 				try{
 					in.close();
-					in = new BufferedInputStream(getInputStream());
+					close();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -121,10 +122,11 @@ public class Client extends Socket {
 				}
 				out.flush();
 				out.close();
+				close();
 			}catch(Exception e){
 				try{
-					in.close();
-					in = new BufferedInputStream(getInputStream());
+					out.close();
+					close();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
