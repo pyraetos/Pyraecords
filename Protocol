@@ -1,0 +1,9 @@
+Pyraecords client/server protocol:
+
+0xAAAAAAAA - Invalid password
+0xABABABAB - Valid password
+0xBBBBBBBB - Password header
+0xCCCCCCCC - Request data
+0xCDCDCDCD - Record file header
+0xDDDDDDDD - Record header
+0xEEEEEEEE - End of file

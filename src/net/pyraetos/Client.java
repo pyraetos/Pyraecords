@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 
 import net.pyraetos.util.Sys;
 
@@ -21,6 +22,12 @@ public class Client extends Socket {
 	public static Client startInputClient(){
 		try {
 			Client c = new Client();
+			c.out.write(Sys.toBytes(0xbbbbbbbb));
+			byte pw[] = Pyraecords.passwordEntered().getBytes();
+			c.out.write(Sys.toBytes(pw.length));
+			c.out.write(pw);
+			c.out.write(Sys.toBytes(0xcccccccc));
+			c.out.flush();
 			Sys.thread(c.new InputThread());
 			return c;
 		} catch (Exception e) {
@@ -49,6 +56,10 @@ public class Client extends Socket {
 				in.read(buf);
 				int flag = Sys.toInt(buf);
 				while(flag != 0xcdcdcdcd){
+					if(flag == 0xaaaaaaaa){
+						Sys.debug("Incorrect password!");
+						throw new SocketException();
+					}
 					in.read(buf);
 					flag = Sys.toInt(buf);
 				}
@@ -67,7 +78,7 @@ public class Client extends Socket {
 							if(flag == 0xdddddddd)
 								break;
 							if(flag == 0xeeeeeeee){
-								recordFile.records.add(record);//////
+								recordFile.records.add(record);
 								break recordLoop;
 							}
 							size = flag;
@@ -90,6 +101,8 @@ public class Client extends Socket {
 				try{
 					in.close();
 					close();
+					if(!(e instanceof SocketException))
+						e.printStackTrace();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -102,6 +115,20 @@ public class Client extends Socket {
 		@Override
 		public void run() {
 			try{
+				out.write(Sys.toBytes(0xbbbbbbbb));
+				byte pw[] = Pyraecords.passwordEntered().getBytes();
+				out.write(Sys.toBytes(pw.length));
+				out.write(pw);
+				out.flush();
+				byte buf[] = new byte[4];
+				in.read(buf);
+				int flag = Sys.toInt(buf);
+				if(flag == 0xaaaaaaaa){
+					throw new SocketException();
+				}else
+				if(flag != 0xabababab){
+					throw new SocketException();
+				}
 				RecordFile rf = Pyraecords.getDisplayedRecordFile();
 				out.write(Sys.toBytes(0xcdcdcdcd));
 				for(int i = 0; i < rf.records.size(); i++){
@@ -127,8 +154,11 @@ public class Client extends Socket {
 				close();
 			}catch(Exception e){
 				try{
+					out.flush();
 					out.close();
 					close();
+					if(!(e instanceof SocketException))
+						e.printStackTrace();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
